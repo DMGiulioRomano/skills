@@ -2,19 +2,29 @@
 
 A curated collection of agent skills for Claude Code.
 
-## How It Works
-
-Clone this repository anywhere on your machine. Skills are loaded by Claude Code via the `--add-dir` flag, which tells Claude where to look for additional skill definitions.
-
-Add an alias to your `.zshrc` (or `.bashrc`):
+## Setup (run once after cloning)
 
 ```bash
-nano ~/.zshrc
-alias claude="claude --add-dir /path/to/this/repo"
-source ~/.zshrc
+git clone git@github.com:DMGiulioRomano/skills.git
+cd skills
+./install.sh
 ```
 
-Replace `/path/to/this/repo` with the actual path where you cloned this repo. From that point, every `claude` invocation automatically loads all skills in this directory.
+`install.sh` does two things:
+1. Creates symlinks from `~/.claude/skills/` to each skill in this repo
+2. Installs `post-merge` and `post-checkout` git hooks so symlinks stay in sync automatically on every `git pull` or branch switch
+
+After that, new skills added by others appear in your `~/.claude/skills/` after a `git pull` with no manual steps.
+
+## How It Works
+
+Skills are loaded by Claude Code from `~/.claude/skills/`. Each skill in this repo is symlinked there, so the repo is the single source of truth across all your machines.
+
+Add an alias to your `.zshrc` (or `.bashrc`) if you want skills loaded via `--add-dir` instead of symlinks:
+
+```bash
+alias claude="claude --add-dir /path/to/this/repo"
+```
 
 > The directory structure must place skill files inside `.claude/skills/` within the repo root — that's the path Claude Code expects when resolving skills from an external directory.
 
