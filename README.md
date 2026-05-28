@@ -69,3 +69,7 @@ alias claude="claude --add-dir /path/to/this/repo"
 - **ubiquitous-language** — Extract a DDD-style ubiquitous language glossary from the current conversation.
 
 - **obsidian-vault** — Search, create, and manage notes in an Obsidian vault with wikilinks and index notes.
+
+- **no-ai-slop** — Regole e self-check anti-AI-slop per prosa **italiana**, in particolare prosa accademica. Adattato da [realrossmanngroup/no_ai_slop_writing_rules](https://github.com/realrossmanngroup/no_ai_slop_writing_rules). Banditi em-dash, verbi svuotati ("rappresenta", "si configura come"), connettivi a vuoto ("Inoltre", "Tuttavia", "In tal senso"), gerundi a coda.
+
+- **humanizer** — Riscrive testi italiani per rimuovere segnali AI. 30 pattern (gonfiatura simbolica, regola del tre, parallelismi negativi, copula avoidance, em-dash, smart quote). Adattato da [blader/humanizer](https://github.com/blader/humanizer) (MIT).
