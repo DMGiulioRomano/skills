@@ -11,10 +11,29 @@ cd skills
 ```
 
 `install.sh` does two things:
-1. Creates symlinks from `~/.claude/skills/` to each skill in this repo
+1. Creates symlinks from `~/.claude/` to the skills **and** the deliberate config files in this repo
 2. Installs `post-merge` and `post-checkout` git hooks so symlinks stay in sync automatically on every `git pull` or branch switch
 
-After that, new skills added by others appear in your `~/.claude/skills/` after a `git pull` with no manual steps.
+After that, new skills or config added by others appear in your `~/.claude/` after a `git pull` with no manual steps.
+
+## Config propagation (CLAUDE.md + rules)
+
+Besides skills, the repo is the single source of truth for the **deliberate**
+config layer, propagated by the same symlink mechanism:
+
+- `.claude/CLAUDE.md` → `~/.claude/CLAUDE.md` (global default for every repo)
+- `.claude/rules/*.md` → `~/.claude/rules/*.md` (modular, machine-wide workflow rules)
+
+Notes:
+- Rules are symlinked **per-file**, so machine-local rules dropped into
+  `~/.claude/rules/` keep working alongside the synced ones.
+- If a **real** (non-symlink) `~/.claude/CLAUDE.md` already exists, it's moved to
+  `CLAUDE.md.bak` before the symlink is created — no local config is destroyed.
+- The **auto memory** (`MEMORY.md`) is intentionally **not** synced: it's local
+  to each machine and meant to be regenerated, not shared.
+- `CLAUDE.md`/rules are context, not enforcement: they steer behavior but don't
+  block actions. For a hard guarantee (e.g. tests green before a commit) use a
+  `PreToolUse` hook or a git `pre-commit` hook — out of scope here.
 
 ## How It Works
 
