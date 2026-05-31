@@ -92,3 +92,5 @@ alias claude="claude --add-dir /path/to/this/repo"
 - **no-ai-slop** — Regole e self-check anti-AI-slop per prosa **italiana**, in particolare prosa accademica. Adattato da [realrossmanngroup/no_ai_slop_writing_rules](https://github.com/realrossmanngroup/no_ai_slop_writing_rules). Banditi em-dash, verbi svuotati ("rappresenta", "si configura come"), connettivi a vuoto ("Inoltre", "Tuttavia", "In tal senso"), gerundi a coda.
 
 - **humanizer** — Riscrive testi italiani per rimuovere segnali AI. 30 pattern (gonfiatura simbolica, regola del tre, parallelismi negativi, copula avoidance, em-dash, smart quote). Adattato da [blader/humanizer](https://github.com/blader/humanizer) (MIT).
+
+- **thesis-advisor-reviewer** — Supervisore accademico rigoroso per tesi magistrale in musica elettronica. Valuta prosa di tesi (capitoli, sezioni, paragrafi) con feedback strutturato in italiano su argomentazione, framework teorico, metodo, letteratura, integrazione disciplinare e scrittura. Risponde sempre in italiano.
