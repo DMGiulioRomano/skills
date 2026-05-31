@@ -26,6 +26,9 @@
 - Se il repo non ha un changelog, non crearne uno di tua iniziativa.
 
 ## Chiusura del lavoro
+- Se il repo usa `docs/plans/`, sposta il plan relativo al branch corrente da
+  `docs/plans/` a `docs/plans/done/` prima del merge (crea `done/` se manca).
+  Includi lo spostamento nei commit del branch.
 - A lavoro completato, chiedimi se preferisco:
   (a) aprire una pull request remota, oppure
   (b) fare merge diretto su `main` in locale.
