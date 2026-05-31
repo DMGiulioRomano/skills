@@ -17,6 +17,14 @@
 - Se esistono test, eseguili e assicurati che passino TUTTI. Se falliscono,
   non committare: correggi prima.
 
+## Changelog
+- Dopo una nuova feature o un refactoring, verifica se il repo ha un changelog
+  (es. `CHANGELOG.md`, sezione "Unreleased", o convenzione equivalente).
+- Se esiste, aggiornalo OBBLIGATORIAMENTE prima di chiudere il lavoro: aggiungi
+  una voce che descriva la modifica in modo chiaro, sotto la categoria corretta
+  (Added / Changed / Fixed / Removed o equivalente del progetto).
+- Se il repo non ha un changelog, non crearne uno di tua iniziativa.
+
 ## Chiusura del lavoro
 - A lavoro completato, chiedimi se preferisco:
   (a) aprire una pull request remota, oppure
