@@ -3,6 +3,7 @@
 # Ogni skill con un .source.json viene verificata tramite la GitHub API.
 set -euo pipefail
 
+GH="$(command -v gh || echo /opt/homebrew/bin/gh)"
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILLS_SRC="$REPO_DIR/.claude/skills"
 
@@ -17,7 +18,7 @@ for skill_dir in "$SKILLS_SRC"/*/; do
     path="$(jq -r '.path' "$source_file")"
     local_sha="$(jq -r '.sha' "$source_file")"
 
-    upstream_sha="$(gh api "repos/$repo/commits?path=$path&per_page=1" --jq '.[0].sha' 2>/dev/null || true)"
+    upstream_sha="$($GH api "repos/$repo/commits?path=$path&per_page=1" --jq '.[0].sha' 2>/dev/null || true)"
 
     if [[ -z "$upstream_sha" ]]; then
         echo "[$skill_name] impossibile raggiungere $repo — salto"
