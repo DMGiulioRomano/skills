@@ -56,15 +56,41 @@ Template — una sezione per ogni variabile con directory, più il fallback a `_
 ```zsh
 _make_<proj_slug>() {
   local cur=${words[-1]}
+
   # VAR=<TAB> → lista sottocartelle di <dir>/
   if [[ $cur == VAR=* ]] && [[ -d <dir> ]]; then
     compadd -P 'VAR=' -- <dir>/*(/:t)
     return
   fi
-  # ... ripeti per ogni variabile ...
-  _make "$@"
+
+  # Se c'è già un target nella riga (parola senza '='), proponi le variabili ?=
+  local w has_target=0
+  for w in ${words[2,-2]}; do
+    [[ $w != *=* ]] && has_target=1 && break
+  done
+
+  if (( has_target )); then
+    local -a vars
+    vars=(${(f)"$(grep -h '^[A-Za-z_][A-Za-z0-9_]*[[:space:]]*?=' Makefile make/*.mk 2>/dev/null \
+      | sed 's/[[:space:]]*?=.*//' \
+      | sed 's/^[[:space:]]*//' \
+      | sort -u)"})
+    compadd -S '=' -- $vars
+    return
+  fi
+
+  # Nessun target ancora: proponi i target .PHONY
+  # Non delega a _make per evitare che zsh aggiunga i file della working directory.
+  local -a targets
+  targets=(${(f)"$(grep -h '^\.PHONY:' Makefile make/*.mk 2>/dev/null \
+    | sed 's/^\.PHONY:[[:space:]]*//' \
+    | tr ' ' '\n' \
+    | sort -u)"})
+  compadd -- $targets
 }
 ```
+
+Adatta il glob (`make/*.mk`) ai file che il progetto include nel Makefile.
 
 ### 4. Crea/aggiorna `.envrc`
 
@@ -110,6 +136,8 @@ if grep -qF "$MARKER" "$ZSHRC" 2>/dev/null; then
 else
   cat >> "$ZSHRC" <<ZSHEOF
 
+autoload -Uz compinit && compinit -C
+
 $MARKER
 _<proj_slug>_completion_precmd() {
   local cur="\${${ROOT_VAR}:-}"
@@ -118,7 +146,7 @@ _<proj_slug>_completion_precmd() {
   local f="\$cur/$COMP_FILE"
   [[ -n "\$cur" && -f "\$f" ]] && source "\$f" && compdef $COMP_FN make
 }
-add-zsh-hook precmd _<proj_slug>_completion_precmd
+precmd_functions+=(_<proj_slug>_completion_precmd)
 ZSHEOF
 fi
 
