@@ -102,6 +102,8 @@ Se `.envrc` esiste già, aggiungi la riga solo se assente.
 
 ### 5. Crea `setup.sh`
 
+Il precmd usa un glob su `.zsh_completions/_*` invece di un singolo file: ogni nuovo file nella cartella viene sourcato automaticamente, senza modificare `setup.sh` o `.zshrc`.
+
 ```sh
 #!/usr/bin/env zsh
 set -e
@@ -109,7 +111,6 @@ set -e
 ZSHRC="$HOME/.zshrc"
 MARKER="# <repo-name>"
 ROOT_VAR="<PROJ_UPPER>_ROOT"
-COMP_FILE=".zsh_completions/_make_<proj_slug>"
 COMP_FN="_make_<proj_slug>"
 
 # ── direnv ────────────────────────────────────────────────────────────────────
@@ -139,12 +140,18 @@ else
 autoload -Uz compinit && compinit -C
 
 $MARKER
+# Carica tutti i file locali dal repo quando ${ROOT_VAR} è settato.
+# Il check su _last_root evita di ricaricare ad ogni comando.
 _<proj_slug>_completion_precmd() {
   local cur="\${${ROOT_VAR}:-}"
   [[ "\$cur" == "\${_<proj_slug>_last_root:-}" ]] && return
   _<proj_slug>_last_root="\$cur"
-  local f="\$cur/$COMP_FILE"
-  [[ -n "\$cur" && -f "\$f" ]] && source "\$f" && compdef $COMP_FN make
+  if [[ -n "\$cur" && -d "\$cur/.zsh_completions" ]]; then
+    for f in "\$cur"/.zsh_completions/_*(N); do
+      source "\$f"
+    done
+    compdef $COMP_FN make
+  fi
 }
 precmd_functions+=(_<proj_slug>_completion_precmd)
 ZSHEOF
@@ -181,3 +188,4 @@ direnv allow
 - La funzione precmd controlla `_last_root` per non ricaricare ad ogni comando
 - Il motivo per cui non basta `chpwd`: direnv setta le variabili in `precmd`, quindi `chpwd` arriverebbe troppo presto
 - zsh `_make` completa già i target dinamicamente leggendo il Makefile — non serve duplicare quella logica
+- `.zsh_completions/` è un punto di estensione: qualsiasi file `_*` aggiunto lì viene sourcato automaticamente (alias, funzioni, ecc.) senza toccare `setup.sh` o `.zshrc`
