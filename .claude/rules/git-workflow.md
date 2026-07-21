@@ -1,6 +1,10 @@
 # Git workflow (vale per tutti i repository)
 
 ## Scelta del branch
+- PRIMA del primo Edit/Write in una sessione: controlla su che branch sei.
+  Se sei su `main` e la modifica non rientra nei casi banali qui sotto, crea
+  subito il feature branch — non iniziare a modificare per poi farti bloccare
+  dal hook.
 - Se la modifica è banale e non tocca codice — README, .gitignore, LICENSE,
   documentazione, correzione di refusi — lavora direttamente su `main`.
 - Per qualsiasi altra modifica (codice, config, refactoring, nuove feature,
