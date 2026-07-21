@@ -8,7 +8,7 @@
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SKILLS_SRC="$REPO_DIR/.claude/skills"
+SKILLS_SRC="$REPO_DIR/vault"
 SKILLS_DST="$HOME/.claude/skills"
 
 if [[ "${1:-}" == "-l" ]]; then

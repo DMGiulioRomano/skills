@@ -11,7 +11,7 @@ PRUNE=0
 [[ "${1:-}" == "--prune" ]] && PRUNE=1
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SKILLS_SRC="$REPO_DIR/.claude/skills"
+SKILLS_SRC="$REPO_DIR/vault"
 SKILLS_DST="$HOME/.claude/skills"
 CORE_FILE="$REPO_DIR/core.txt"
 
@@ -31,7 +31,9 @@ is_core() {
 for link in "$SKILLS_DST"/*; do
     if [[ -L "$link" && ! -e "$link" ]]; then
         target="$(readlink "$link")"
-        if [[ "$target" == "$SKILLS_SRC"* ]]; then
+        # $REPO_DIR, non $SKILLS_SRC: così ripulisce anche i link a percorsi
+        # vecchi dentro il repo (es. il precedente .claude/skills/)
+        if [[ "$target" == "$REPO_DIR"* ]]; then
             echo "Removing broken symlink: $link"
             rm "$link"
         fi

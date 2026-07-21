@@ -5,7 +5,7 @@ set -euo pipefail
 
 GH="$(command -v gh || echo /opt/homebrew/bin/gh)"
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SKILLS_SRC="$REPO_DIR/.claude/skills"
+SKILLS_SRC="$REPO_DIR/vault"
 
 if [[ $# -ne 1 ]]; then
     echo "Uso: $0 <nome-skill>"

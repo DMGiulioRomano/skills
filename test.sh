@@ -12,7 +12,7 @@ DST="$TMP/.claude/skills"
 fail() { echo "FAIL: $1" >&2; exit 1; }
 
 first_non_core() {
-    for d in "$REPO_DIR/.claude/skills"/*/; do
+    for d in "$REPO_DIR/vault"/*/; do
         n="$(basename "$d")"
         grep -qxF "$n" <(sed -e 's/#.*//' -e 's/[[:space:]]//g' "$REPO_DIR/core.txt" | grep -v '^$') || { echo "$n"; return; }
     done
@@ -46,7 +46,7 @@ if bash "$REPO_DIR/link-skill.sh" __nonesiste__ >/dev/null 2>&1; then
 fi
 
 # symlink rotto verso il repo: va rimosso
-ln -s "$REPO_DIR/.claude/skills/__cancellata__" "$DST/__cancellata__"
+ln -s "$REPO_DIR/vault/__cancellata__" "$DST/__cancellata__"
 bash "$REPO_DIR/sync-links.sh" >/dev/null
 [[ ! -L "$DST/__cancellata__" ]] || fail "symlink rotto non rimosso"
 

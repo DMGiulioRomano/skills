@@ -4,7 +4,7 @@
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SKILLS_SRC="$REPO_DIR/.claude/skills"
+SKILLS_SRC="$REPO_DIR/vault"
 OUT="$REPO_DIR/CATALOG.md"
 
 # Description del frontmatter, appiattita su una riga.

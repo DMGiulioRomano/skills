@@ -80,10 +80,8 @@ Skills are loaded by Claude Code from `~/.claude/skills/`. Core skills are
 symlinked there permanently, vault skills on demand — either way the repo stays
 the single source of truth across all your machines.
 
-Add an alias to your `.zshrc` (or `.bashrc`) if you want skills loaded via `--add-dir` instead of symlinks:
-
-```bash
-alias claude="claude --add-dir /path/to/this/repo"
-```
-
-> The directory structure must place skill files inside `.claude/skills/` within the repo root — that's the path Claude Code expects when resolving skills from an external directory.
+Skill sources live in `vault/`, deliberately **not** in `.claude/skills/`: any
+directory named `.claude/skills/` inside a working directory is auto-discovered
+by Claude Code, which would load the whole vault into context and defeat the
+on-demand mechanism. Only `.claude/CLAUDE.md` and `.claude/rules/` stay under
+`.claude/`, since those are meant to be synced to `~/.claude/`.
