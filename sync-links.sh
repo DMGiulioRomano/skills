@@ -1,13 +1,31 @@
 #!/usr/bin/env bash
-# Creates missing symlinks from ~/.claude/skills/ to each skill in this repo.
-# Removes broken symlinks pointing into this repo (deleted skills).
+# Linka in ~/.claude/skills/ solo le skill elencate in core.txt.
+# Le altre restano nel vault e si attivano on-demand con link-skill.sh.
+# Rimuove i symlink rotti che puntano in questo repo (skill cancellate).
+# Con --prune rimuove anche i link validi a skill NON core: serve per la
+# migrazione una tantum, non nell'uso normale — un link on-demand attivato
+# di proposito non va disfatto da un sync.
 set -euo pipefail
+
+PRUNE=0
+[[ "${1:-}" == "--prune" ]] && PRUNE=1
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILLS_SRC="$REPO_DIR/.claude/skills"
 SKILLS_DST="$HOME/.claude/skills"
+CORE_FILE="$REPO_DIR/core.txt"
 
 mkdir -p "$SKILLS_DST"
+
+# core.txt -> lista, senza commenti e righe vuote
+core_skills() {
+    [[ -f "$CORE_FILE" ]] || return 0
+    sed -e 's/#.*//' -e 's/[[:space:]]//g' "$CORE_FILE" | grep -v '^$' || true
+}
+
+is_core() {
+    core_skills | grep -qxF "$1"
+}
 
 # Remove broken symlinks that point into this repo
 for link in "$SKILLS_DST"/*; do
@@ -20,12 +38,30 @@ for link in "$SKILLS_DST"/*; do
     fi
 done
 
-# Create missing symlinks
-for skill_dir in "$SKILLS_SRC"/*/; do
-    skill_name="$(basename "$skill_dir")"
+# Con --prune: slinka le skill non-core ancora presenti (migrazione una tantum)
+if [[ $PRUNE -eq 1 ]]; then
+    for link in "$SKILLS_DST"/*; do
+        [[ -L "$link" ]] || continue
+        target="$(readlink "$link")"
+        [[ "$target" == "$SKILLS_SRC"* ]] || continue
+        name="$(basename "$link")"
+        if ! is_core "$name"; then
+            echo "Pruned (torna nel vault): $name"
+            rm "$link"
+        fi
+    done
+fi
+
+# Linka le skill core mancanti
+for skill_name in $(core_skills); do
+    skill_dir="$SKILLS_SRC/$skill_name"
     target="$SKILLS_DST/$skill_name"
+    if [[ ! -d "$skill_dir" ]]; then
+        echo "Attenzione: core.txt elenca '$skill_name' ma non esiste nel vault" >&2
+        continue
+    fi
     if [[ ! -e "$target" && ! -L "$target" ]]; then
-        ln -s "$skill_dir" "$target"
+        ln -s "$skill_dir/" "$target"
         echo "Linked: $target"
     fi
 done

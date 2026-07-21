@@ -1,0 +1,12 @@
+# Skill linkate sempre in ~/.claude/skills/ da sync-links.sh.
+# Tutte le altre restano nel vault e si attivano on-demand con link-skill.sh.
+# Righe vuote e commenti ignorati.
+
+context-audit
+gdrive-sync
+grilling
+new-feature
+skill-creator
+tdd
+teach
+zsh-autocomplete
