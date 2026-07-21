@@ -37,10 +37,16 @@ Activation is **hot**: a newly linked skill is invocable in the running
 session. A plain `sync-links.sh` never deactivates a skill you linked on
 purpose — only `--prune` does, and that's for the one-time migration.
 
-Claude reaches for the vault on its own: the `skill-on-demand` rule tells it to
-read `CATALOG.md` when a task looks covered by something not currently loaded,
-and to propose activating it. The catalog is read on demand, never held in
-context.
+Claude reaches for the vault on its own: a short section in the **global
+`CLAUDE.md`** tells it to read `CATALOG.md` when a task looks covered by
+something not currently loaded, and to propose activating it. The catalog is
+read on demand, never held in context.
+
+It lives in `CLAUDE.md` rather than in `.claude/rules/` on purpose: rules are
+not reliably loaded every session (observed: `git-workflow.md` present,
+`zsh-autocomplete.md` absent, same format, both installed). `CLAUDE.md` always
+is — and a vault whose entry point silently fails to load is a vault you can
+never reach.
 
 ## Catalog
 
