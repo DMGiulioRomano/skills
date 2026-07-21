@@ -10,8 +10,7 @@ SKILLS_DST="$HOME/.claude/skills"
 mkdir -p "$SKILLS_DST"
 
 # Remove broken symlinks that point into this repo
-for link in "$SKILLS_DST"/*/; do
-    link="${link%/}"
+for link in "$SKILLS_DST"/*; do
     if [[ -L "$link" && ! -e "$link" ]]; then
         target="$(readlink "$link")"
         if [[ "$target" == "$SKILLS_SRC"* ]]; then
