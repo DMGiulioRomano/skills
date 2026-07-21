@@ -22,7 +22,7 @@ non elencato qui per non sporcare il diff a ogni attivazione).
 | `grill-with-docs` | A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go. |
 | `grilling` | Interview the user relentlessly about a plan or design. Use when the user wants to stress-test a plan before building, or uses any 'grill' trigger phrases. |
 | `handoff` | Compact the current conversation into a handoff document for another agent to pick up. |
-| `humanizer` | Rimuove i segnali di scrittura AI da testi italiani. Da usare quando si edita o revisiona prosa italiana per renderla naturale, in particolare prosa accademica  |
+| `humanizer` | Rimuove i segnali di scrittura AI dalla prosa italiana. Usare quando si scrive, edita o revisiona testo italiano, in particolare accademico e musicologico. |
 | `improve-codebase-architecture` | Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/. Use when the user wants to improve arc |
 | `new-feature` | Full TDD workflow for new features and refactoring in the PythonGranularEngine project. Creates feature branch, runs impact analysis, proposes design, then driv |
 | `no-ai-slop` | Regole ed esempi pratici per scrivere prosa italiana che non suoni AI-generata. Da consultare prima di scrivere o revisionare qualunque testo in italiano, in pa |
