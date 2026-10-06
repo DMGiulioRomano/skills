@@ -57,4 +57,28 @@ if bash "$REPO_DIR/link-skill.sh" "$VAULT1" >/dev/null 2>&1; then
 fi
 [[ "$(cat "$DST/$VAULT1")" == "locale" ]] || fail "file reale alterato"
 
+# ---------------------------------------------------------------------------
+# Il check del corpo delle PR (.github/scripts/check_closing_keyword.py).
+# Qui non c'e' pytest, quindi la guardia e' questa: lo script esiste, rifiuta
+# i corpi che GitHub non collega -- «Chiude #N» compreso, che e' il caso vero
+# da cui nasce -- e il template versionato NON passa il check, perche' uno che
+# passa sarebbe un template inutile.
+# ---------------------------------------------------------------------------
+CHECK="$REPO_DIR/.github/scripts/check_closing_keyword.py"
+[[ -f "$CHECK" ]] || fail "manca $CHECK"
+
+check_corpo() { PR_BODY="$1" python3 "$CHECK" >/dev/null 2>&1; }
+
+check_corpo 'Closes #12'                  || fail "check: 'Closes #12' rifiutato"
+check_corpo 'No issue: refuso nel README' || fail "check: 'No issue:' rifiutato"
+! check_corpo 'Chiude #12'                || fail "check: 'Chiude #12' accettato"
+! check_corpo 'Closes: #12'               || fail "check: 'Closes: #12' accettato"
+! check_corpo ''                           || fail "check: corpo vuoto accettato"
+! check_corpo '<!-- Closes #12 -->'        || fail "check: commento HTML accettato"
+
+TPL="$REPO_DIR/.github/pull_request_template.md"
+[[ -f "$TPL" ]] || fail "manca $TPL"
+grep -qxE 'Closes #[[:space:]]*' "$TPL" || fail "il template non apre con 'Closes #'"
+! check_corpo "$(cat "$TPL")" || fail "il template versionato passa il check"
+
 echo "OK: tutti i check passano (core='$CORE1', vault='$VAULT1')"
