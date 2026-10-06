@@ -38,6 +38,35 @@
   (b) fare merge diretto su `main` in locale.
 - Procedi solo dopo la mia risposta.
 
+## Corpo della pull request
+- La **prima riga del corpo** dichiara l'issue che la PR chiude, in inglese:
+
+  ```
+  Closes #219
+  ```
+
+  È l'unica cosa che GitHub legge per chiudere l'issue al merge nel branch di
+  default. Non il titolo, non un commento, non i messaggi di commit del branch.
+- **Le parole chiave sono inglesi** e sono nove: `close`/`closes`/`closed`,
+  `fix`/`fixes`/`fixed`, `resolve`/`resolves`/`resolved`. Il resto del corpo
+  resta in italiano. Un «Chiude #219» non chiude niente: è il caso vero da cui
+  questa regola nasce — la PR #293 di PythonGranularEngine diceva «Chiude #219,
+  entrambi i punti», è stata merged, e la #219 è rimasta aperta.
+- **Una riga per ogni issue.** `Closes #123, #124` collega solo la prima.
+- **Fra parola chiave e numero va uno spazio**, non i due punti.
+- **Solo issue dello stesso repo.** `Closes owner/repo#n` crea un rimando, non
+  una chiusura: un'issue di un altro repo la chiude una PR su quel repo. Qui si
+  scrive senza parola chiave (`Refs owner/repo#n`) — vale per le issue che
+  l'analisi d'impatto apre a valle, che vanno citate e non chiuse.
+- **Mai dentro un commento HTML o un blocco di codice**: lì GitHub non legge.
+- Se la PR non chiude nessuna issue, **dichiaralo** con una riga
+  `No issue: <motivo>`. Senza il motivo non si distingue una PR che non ha
+  un'issue da una a cui la riga è stata tolta.
+- Se il repo ha un `.github/pull_request_template.md`, il corpo segue le sue
+  sezioni. Se ha il check `closes-issue`, la riga è anche obbligatoria per il
+  merge; dove il check non c'è, la riga si scrive comunque — serve a chiudere
+  l'issue, non a passare la CI.
+
 ## Pulizia
 - Dopo il merge di un branch o la chiusura di una PR, elimina il branch sia in
   locale (`git branch -d`) sia in remoto se presente (`git push origin --delete`).
