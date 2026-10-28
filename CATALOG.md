@@ -38,5 +38,6 @@ non elencato qui per non sporcare il diff a ogni attivazione).
 | `triage-issue` | Triage a bug or issue by exploring the codebase to find root cause, then create a GitHub issue with a TDD-based fix plan. Use when user reports a bug, wants to  |
 | `ubiquitous-language` | Extract a DDD-style ubiquitous language glossary from the current conversation, flagging ambiguities and proposing canonical terms. Saves to UBIQUITOUS_LANGUAGE |
 | `write-a-skill` | Create new agent skills with proper structure, progressive disclosure, and bundled resources. Use when user wants to create, write, or build a new skill. |
+| `youtube-transcript` | Extract the transcript of a YouTube video, and summarize it when asked. Use when the user provides a YouTube URL (youtube.com/watch?v=, youtu.be/, shorts/, or s |
 | `zoom-out` | Tell the agent to zoom out and give broader context or a higher-level perspective. Use when you're unfamiliar with a section of code or need to understand how i |
 | `zsh-autocomplete` | Configura autocompletion zsh dinamica in un repository — analizza il Makefile per trovare target e variabili, crea .zsh_completions/, .envrc, e setup.sh idempot |
