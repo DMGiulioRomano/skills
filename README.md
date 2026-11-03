@@ -62,12 +62,16 @@ config layer, propagated by the same symlink mechanism:
 
 - `.claude/CLAUDE.md` → `~/.claude/CLAUDE.md` (global default for every repo)
 - `.claude/rules/*.md` → `~/.claude/rules/*.md` (modular, machine-wide workflow rules)
+- `.claude/settings.json` → `~/.claude/settings.json` (user settings, such as `attribution`)
 
 Notes:
 - Rules are symlinked **per-file**, so machine-local rules dropped into
   `~/.claude/rules/` keep working alongside the synced ones.
 - If a **real** (non-symlink) `~/.claude/CLAUDE.md` already exists, it's moved to
   `CLAUDE.md.bak` before the symlink is created — no local config is destroyed.
+- A real `~/.claude/settings.json` is moved to `settings.json.bak` the same way:
+  copy over anything you want to keep. Settings Claude Code saves on its own
+  (`/config`, `/model`) go through the link and show up in `git status` here.
 - The **auto memory** (`MEMORY.md`) is intentionally **not** synced: it's local
   to each machine and meant to be regenerated, not shared.
 - `CLAUDE.md`/rules are context, not enforcement: they steer behavior but don't
@@ -83,5 +87,5 @@ the single source of truth across all your machines.
 Skill sources live in `vault/`, deliberately **not** in `.claude/skills/`: any
 directory named `.claude/skills/` inside a working directory is auto-discovered
 by Claude Code, which would load the whole vault into context and defeat the
-on-demand mechanism. Only `.claude/CLAUDE.md` and `.claude/rules/` stay under
+on-demand mechanism. Only `.claude/CLAUDE.md`, `.claude/settings.json` and `.claude/rules/` stay under
 `.claude/`, since those are meant to be synced to `~/.claude/`.

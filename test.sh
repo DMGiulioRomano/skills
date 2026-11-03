@@ -57,6 +57,19 @@ if bash "$REPO_DIR/link-skill.sh" "$VAULT1" >/dev/null 2>&1; then
 fi
 [[ "$(cat "$DST/$VAULT1")" == "locale" ]] || fail "file reale alterato"
 
+# settings.json globale: un file reale va salvato in .bak, poi resta un symlink
+SET="$TMP/.claude/settings.json"
+[[ -L "$SET" ]] || fail "sync non ha linkato settings.json"
+rm "$SET"
+echo '{"locale": true}' > "$SET"
+bash "$REPO_DIR/sync-links.sh" >/dev/null
+[[ -L "$SET" && "$SET" -ef "$REPO_DIR/.claude/settings.json" ]] || fail "settings.json reale non sostituito dal symlink"
+grep -q locale "$SET.bak" || fail "settings.json reale non salvato in .bak"
+bash "$REPO_DIR/sync-links.sh" >/dev/null
+[[ -L "$SET" ]] || fail "un secondo sync ha rotto il symlink di settings.json"
+python3 -c 'import json,sys; assert json.load(open(sys.argv[1]))["attribution"]["commit"] == ""' \
+    "$REPO_DIR/.claude/settings.json" || fail "attribution.commit deve essere vuoto"
+
 # ---------------------------------------------------------------------------
 # Il check del corpo delle PR (.github/scripts/check_closing_keyword.py).
 # Qui non c'e' pytest, quindi la guardia e' questa: lo script esiste, rifiuta
