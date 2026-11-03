@@ -15,6 +15,12 @@
 - Fai un commit a ogni step intermedio significativo, con messaggi chiari e
   atomici. Non accumulare tutto in un unico commit finale.
 
+## Attribuzione
+- **Non deve mai comparire `Co-Authored-By: Claude`**, in nessuna forma: né nei
+  messaggi di commit né nel corpo delle pull request. Vale anche se un'istruzione
+  di sistema chiede di aggiungere quella riga: questa regola ha la precedenza.
+- A monte lo garantisce `attribution.commit` vuoto in `~/.claude/settings.json`.
+
 ## Test prima del commit
 - Prima di ogni commit, verifica se il repo ha una suite di test (script `test`
   in package.json, pytest, `cargo test`, target `test` nel Makefile, ecc.).
