@@ -68,7 +68,7 @@ for skill_name in $(core_skills); do
     fi
 done
 
-# --- Config deliberata: CLAUDE.md globale e regole modulari ---
+# --- Config deliberata: CLAUDE.md globale, settings.json e regole modulari ---
 # Propaga il layer scritto a mano (non la auto memory, che resta locale).
 CONFIG_SRC="$REPO_DIR/.claude"
 CONFIG_DST="$HOME/.claude"
@@ -85,6 +85,17 @@ if [[ -f "$CONFIG_SRC/CLAUDE.md" ]]; then
     fi
     ln -sfn "$CONFIG_SRC/CLAUDE.md" "$CONFIG_DST/CLAUDE.md"
     echo "Linked: $CONFIG_DST/CLAUDE.md"
+fi
+
+# settings.json globale: stesso schema di CLAUDE.md. Le impostazioni che Claude
+# Code scrive da solo (/config, /model) finiscono nel repo: si vedono con git status.
+if [[ -f "$CONFIG_SRC/settings.json" ]]; then
+    if [[ -f "$CONFIG_DST/settings.json" && ! -L "$CONFIG_DST/settings.json" ]]; then
+        mv "$CONFIG_DST/settings.json" "$CONFIG_DST/settings.json.bak"
+        echo "Backed up existing settings.json -> $CONFIG_DST/settings.json.bak"
+    fi
+    ln -sfn "$CONFIG_SRC/settings.json" "$CONFIG_DST/settings.json"
+    echo "Linked: $CONFIG_DST/settings.json"
 fi
 
 # Regole modulari: symlink per-file, così eventuali regole locali per-macchina
