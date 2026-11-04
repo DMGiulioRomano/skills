@@ -8,6 +8,7 @@
     }
   },
   "tui": "fullscreen",
+  "autoScrollEnabled": false,
   "theme": "dark",
   "hooks": {
     "PreToolUse": [
