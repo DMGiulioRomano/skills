@@ -23,5 +23,9 @@
       }
     ]
   },
-  "spinnerTipsEnabled": false
+  "spinnerTipsEnabled": false,
+  "statusLine": {
+    "type": "command",
+    "command": "python3 \"$HOME/github/DMGiulioRomano/skills/.claude/statusline.py\""
+  }
 }
